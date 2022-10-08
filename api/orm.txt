@@ -1,0 +1,18 @@
+
+class Books(models.Model):
+    name=models.CharField(max_length=200)
+    author=models.CharField(max_length=200)
+    price=models.PositiveIntegerField()
+    publisher=models.CharField(max_length=200)
+    qty=models.PositiveIntegerField(default=1)
+
+
+create
+   Modelname.objects.create(field1=value,......)
+
+Books.objects.create(name="randamoozham",author="mt",price=450,publisher="abc",qty=30)
+Books.objects.create(name="arachar",author="meera",price=500,publisher="manorama",qty=50)
+
+listing all record
+ Modelname.objects.all()
+qs=Books.objects.all()
