@@ -5,7 +5,9 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import Books,Reviews
-from api.serializers import BookSerializer,ReviewSerializer
+from api.serializers import BookSerializer,ReviewSerializer,UserSerializer
+from rest_framework.views import ModelViewSet
+from django.contrib.auth.models import User
 class ProductsView(APIView):
     def get(self,request,*args,**kwargs):
         return Response({"msg":"inside product get"})
@@ -114,7 +116,32 @@ class ReviewDetailsView(APIView):
         return Response(data="deleted")
 
 
+class ReviewModelViewsetView(ModelViewSet):
+    serializer_class=ReviewSerializer
+    queryset=Reviews.objects.all()
+    def list(self,request,*args,**kwargs):
+        all_reviews=Reviews.objects.all()
+        if 'user' in request.query_params:
+            all_reviews=all_reviews.filter(user=request.query_params.get("user"))
+        serializer = ReviewSerializer(all_reviews, many=True)
+        return Response(data=serializer.data)
 
 
 
+class ProductModelViewsetView(ModelViewSet):
+    serializer_class=BookSerializer
+    queryset=Books.objects.all()
 
+
+
+class UsersView(ModelViewSet):
+    serializer_class=UserSerializer
+    queryset=User.objects.all()
+
+    def create(self,request,*args,**kwargs):
+        serializer=UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer.errors)

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from api.models import Reviews
+from django.contrib.auth.models import User
 
 class BookSerializer(serializers.Serializer):
     id=serializers.IntegerField(read_only=True)
@@ -24,3 +25,10 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields="__all__"
         # exclude=("created_date",)
 # fields=["book","user","comment","rated"]
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields=['first_name','last_name','username','email','password']
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)

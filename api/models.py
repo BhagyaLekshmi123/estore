@@ -26,6 +26,16 @@ class Reviews(models.Model):
     def __str__(self):
         return self.comment
 
+# class User(models.Model):
+#     first_name=models.CharField(max_length=120)
+#     last_name=models.CharField(max_length=120)
+#     username=models.CharField(max_length=140)
+#     email=models.CharField(max_length=140)
+#     password=models.CharField(max_length=120)
+#     def __str__(self):
+#         return self.username
+
+
 
 # django orm
 # object relational mapping
